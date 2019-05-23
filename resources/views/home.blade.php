@@ -27,6 +27,8 @@
   </tr>
   @endforeach
 </table>
+{{ $users->links() }} <!--追加-->
+
                 </div>
             </div>
         </div>

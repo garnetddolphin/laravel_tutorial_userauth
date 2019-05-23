@@ -25,7 +25,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $users = User::all(); // ←追記
+        $users = User::paginate(1); // ←修正
         return view('home', ['users' => $users]); // ←修正
     }
 }
