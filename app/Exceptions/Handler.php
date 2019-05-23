@@ -46,6 +46,20 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        // ここから追記
+      // ルーティングで認められていないHTTPメソッドが呼ばれたケース
+      if(basename(str_replace('\\','/',get_class($exception)))=='MethodNotAllowedHttpException') {
+        return response()->json(['error'=>'HTTP Method Not Allowed'],405);
+      }
+      // ルーティングで定義されていないURIが呼ばれたケース
+      if(basename(str_replace('\\','/',get_class($exception)))=='NotFoundHttpException') {
+        return response()->json(['error'=>'URI Not Found'],404);
+      }
+      // 値のないIDが呼ばれたケース
+      if(basename(str_replace('\\','/',get_class($exception)))=='ModelNotFoundException') {
+        return response()->json(['error'=>'Record Not Found'],404);
+      }
+      // ここまで追記
         return parent::render($request, $exception);
     }
 }
