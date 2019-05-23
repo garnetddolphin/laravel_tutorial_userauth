@@ -7,6 +7,13 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <!-- ここから追加 -->
+    <script>
+      window.Laravel = {};
+      window.Laravel.csrfToken = "{{ csrf_token() }}";
+    </script>
+    <!-- ここまで追加 -->
+
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
@@ -18,6 +25,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <!-- Headタグ内に足す -->
+    <!-- <link rel="stylesheet" href="{{ mix('/css/app.css') }}"> -->
 </head>
 <body>
     <div id="app">
@@ -76,5 +85,7 @@
             @yield('content')
         </main>
     </div>
+    <!-- body タグの最後に足す-->
+<!-- <script src=" {{ mix('js/app.js') }} "></script> -->
 </body>
 </html>
