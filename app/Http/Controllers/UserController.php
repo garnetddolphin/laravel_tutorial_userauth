@@ -9,7 +9,10 @@ class UserController extends Controller
 {
     public function index() // ユーザ一覧を返します
     {
-        $users = User::all();
+        $users = User::paginate(1);
+        if($users->getCollection()->isEmpty()){
+            return response()->json(['error' => 'Record Not Found'],404);
+        }
         return $users;
     }
     public function show($id) // ユーザIDをキーにユーザ情報詳細を返します

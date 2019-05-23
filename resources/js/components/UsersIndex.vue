@@ -14,7 +14,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="user, index in users">
+          <tr v-for="user, index in users.data"> <!--修正-->
             <td>{{ user.name }}</td>
             <td>{{ user.email }}</td>
             <td>
@@ -24,6 +24,7 @@
           </tr>
         </tbody>
         </table>
+        <pagination :data="users" @pagination-change-page="getResults"></pagination> <!--追加-->
       </div>
     </div>
   </div>
@@ -31,19 +32,25 @@
 
 <script>
   import http from '../http.js'
+  import pagination from 'laravel-vue-pagination'; // 追記
   export default {
     data: function () {
       return {
-        users: []
+        users: {} // 修正
       }
     },
+    // 追記ここから
+    components: { 
+      pagination
+    },
+    // 追記ここまで
     mounted() {
       this.getResults();
     },
     methods: {
-      getResults() {
+      getResults(page=1) { // 修正
         var app = this;
-        http.get('users',resp=>{
+        http.get('users?page='+page,resp=>{ // 修正
           app.users = resp.data;
         })
       },
