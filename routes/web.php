@@ -19,6 +19,12 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+// home2へ認証なしでアクセスできるようにする
+/*
 Route::middleware('auth')->get('/home2', function () {
     return view('home2');
 })->name('home2');
+*/
+Route::get('/home2',function(){
+	return view('home2');
+});

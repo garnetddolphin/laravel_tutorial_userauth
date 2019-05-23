@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
+use JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class UserController extends Controller
 {
@@ -41,4 +43,26 @@ class UserController extends Controller
         $user->delete();
         return '';
     }
+
+    // emailとpasswordでアクセストークンを取得する
+    public function authenticate(Request $request) // emailとpasswordでアクセストークンを取得して返します
+    {
+        $credentials = $request->only('email', 'password');
+        try {
+            if (! $token = JWTAuth::attempt($credentials)) {
+                return response()->json(['error' => 'invalid_credentials'], 401);
+            }
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'could_not_create_token'], 500);
+        }
+        $user = User::where('email', $request->email)->first();
+        return response()->json(compact('user', 'token'));
+    }
+
+    public function getCurrentUser() // トークンに紐づくユーザ情報を取得して返します
+    {
+        $user = JWTAuth::parseToken()->authenticate();
+        return response()->json(compact('user'));
+    }
+
 }

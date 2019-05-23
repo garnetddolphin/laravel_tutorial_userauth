@@ -20,3 +20,9 @@ use Illuminate\Http\Request;
 Route::group([], function () {
     Route::resource('users', 'UserController');
 });
+
+Route::post('authenticate','UserController@authenticate');
+Route::group(['middleware' => 'jwt.auth'], function () {
+  Route::resource('users', 'UserController');
+  Route::get('me',  'UserController@getCurrentUser');
+});
